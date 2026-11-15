@@ -1,1 +1,913 @@
 
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>دنیای مفتح | Mofatteh World</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     متغیرها و ریست (تم مفتح)
+     ============================================================ */
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :root{
+    --bg-body:#f8fafc; 
+    --bg-surface:#ffffff;
+    --text-main:#0f172a; 
+    --text-muted:#64748b; 
+    
+    --primary:#4f46e5; 
+    --primary-hover:#4338ca;
+    --accent:#f59e0b; 
+    
+    --radius-sm:10px;
+    --radius-md:18px;
+    --radius-lg:28px;
+    
+    --shadow-soft:0 4px 20px -2px rgba(15,23,42,0.05);
+    --shadow-hover:0 15px 30px -5px rgba(15,23,42,0.08);
+    --shadow-glass:0 10px 40px -10px rgba(15,23,42,0.15);
+    
+    --font-main:'Vazirmatn', sans-serif;
+  }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    font-family:var(--font-main);
+    background-color:var(--bg-body);
+    color:var(--text-main);
+    line-height:1.8;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* هاله‌های نوری پس‌زمینه */
+  .bg-glow-1, .bg-glow-2 {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: -1;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .bg-glow-1 {
+    top: -100px; right: -100px;
+    background: radial-gradient(circle, rgba(79,70,229,0.3) 0%, rgba(255,255,255,0) 70%);
+  }
+  .bg-glow-2 {
+    top: 40%; left: -200px;
+    background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, rgba(255,255,255,0) 70%);
+  }
+
+  /* ============================================================
+     نوبار (Navbar)
+     ============================================================ */
+  .navbar{
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    background:rgba(255, 255, 255, 0.75);
+    backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    border-bottom:1px solid rgba(15,23,42,0.04);
+    transition:all 0.3s ease;
+  }
+
+  .nav-container{
+    max-width:1200px; margin:0 auto; padding:16px 24px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+
+  .logo{
+    font-size:1.4rem; font-weight:900; color:var(--text-main);
+    text-decoration:none; display:flex; align-items:center; gap:12px;
+    letter-spacing:-0.5px;
+  }
+
+  .logo-mark{
+    width:38px; height:38px; background:var(--text-main); color:#fff;
+    border-radius:12px; display:grid; place-items:center;
+    font-size:1.2rem; font-weight:900; box-shadow:0 4px 12px rgba(15,23,42,0.2);
+    transition:transform 0.3s;
+  }
+  .logo:hover .logo-mark { transform: rotate(-10deg) scale(1.05); }
+
+  .nav-links{ display:flex; gap:28px; align-items:center; }
+  .nav-links a{
+    text-decoration:none; color:var(--text-muted); font-weight:500;
+    font-size:0.95rem; transition:color 0.2s ease;
+  }
+  .nav-links a:hover{ color:var(--text-main); }
+  
+  /* هایلایت کردن لینک پروژه در نوبار */
+  .nav-links a.nav-highlight {
+    color: var(--primary);
+    font-weight: 800;
+  }
+
+  /* دکمه مشکی ارتباط با سازندگان */
+  .btn-nav{
+    background:var(--text-main); color:#fff !important;
+    padding:10px 24px; border-radius:999px; font-weight:700 !important;
+    font-size:0.9rem !important; transition:all 0.3s ease !important;
+    box-shadow:0 4px 12px rgba(15,23,42,0.15);
+  }
+  .btn-nav:hover{
+    background:var(--primary) !important; transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(79,70,229,0.3);
+  }
+
+  .hamburger{
+    display:none; background:none; border:none; font-size:1.5rem;
+    cursor:pointer; color:var(--text-main);
+  }
+
+  /* ============================================================
+     بخش هیرو (Hero)
+     ============================================================ */
+  .hero{
+    padding:160px 24px 80px;
+    max-width:1200px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:40px;
+  }
+
+  .hero-text{ flex:1; max-width:580px; }
+
+  .hero-badge{
+    display:inline-flex; align-items:center; gap:8px;
+    background:#fff; color:var(--text-main);
+    padding:6px 16px; border-radius:999px;
+    font-weight:700; font-size:0.85rem; margin-bottom:24px;
+    box-shadow:var(--shadow-soft); border:1px solid rgba(15,23,42,0.05);
+  }
+
+  .hero-badge::before{
+    content:''; width:8px; height:8px; background:var(--primary);
+    border-radius:50%; animation:pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(79,70,229,0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(79,70,229,0); }
+    100% { box-shadow: 0 0 0 0 rgba(79,70,229,0); }
+  }
+
+  .hero h1{
+    font-size:clamp(2.8rem, 5vw, 4.2rem);
+    font-weight:900; line-height:1.1; letter-spacing:-2px;
+    margin-bottom:20px; color:var(--text-main);
+  }
+
+  .hero h1 .text-gradient{
+    background:linear-gradient(135deg, var(--text-main) 0%, var(--primary) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+
+  .hero p{
+    font-size:1.1rem; color:var(--text-muted); font-weight:400;
+    margin-bottom:32px; line-height:2; max-width:95%;
+  }
+
+  .hero-buttons{ display:flex; gap:16px; flex-wrap:wrap; }
+
+  .btn-primary{
+    background:var(--primary); color:#fff; text-decoration:none;
+    padding:14px 32px; border-radius:var(--radius-sm); font-weight:700;
+    font-size:1rem; transition:all 0.3s ease;
+    box-shadow:0 4px 14px rgba(79,70,229,0.3);
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary:hover{
+    background:var(--primary-hover); transform:translateY(-2px);
+    box-shadow:0 8px 24px rgba(79,70,229,0.4);
+  }
+
+  .btn-secondary{
+    background:#fff; color:var(--text-main); text-decoration:none;
+    padding:14px 32px; border-radius:var(--radius-sm); font-weight:700;
+    font-size:1rem; border:1px solid rgba(15,23,42,0.08);
+    box-shadow:var(--shadow-soft); transition:all 0.3s ease;
+    display:inline-flex; align-items:center;
+  }
+  .btn-secondary:hover{ border-color:var(--text-main); transform:translateY(-2px); }
+
+  /* گرافیک هیرو */
+  .hero-graphic{
+    flex-shrink:0; width:380px; height:340px;
+    position:relative; display:flex; align-items:center; justify-content:center;
+    margin-left: 20px;
+  }
+
+  .mesh-bg {
+    position: absolute; width: 100%; height: 100%;
+    top: 0; left: 0;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(79,70,229,0.3) 0%, transparent 60%),
+      radial-gradient(circle at 80% 70%, rgba(236,72,153,0.25) 0%, transparent 60%);
+    filter: blur(40px); animation: meshMove 8s infinite alternate ease-in-out;
+    z-index: 0;
+  }
+  @keyframes meshMove {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.1) translate(-10px, 10px); }
+  }
+
+  .glass-window {
+    position: relative; width: 280px; height: 190px;
+    background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px);
+    border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 20px 40px -10px rgba(15,23,42,0.2);
+    z-index: 10; transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+    transition: transform 0.5s ease; overflow: hidden; display: flex; flex-direction: column;
+  }
+  .hero-graphic:hover .glass-window {
+    transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.02);
+  }
+
+  .window-header {
+    height: 28px; background: rgba(255,255,255,0.5);
+    border-bottom: 1px solid rgba(255,255,255,0.6);
+    display: flex; align-items: center; padding: 0 12px; gap: 6px;
+  }
+  .dot-btn { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-btn.red { background: #ff5f56; }
+  .dot-btn.yellow { background: #ffbd2e; }
+  .dot-btn.green { background: #27c93f; }
+
+  .window-body { padding: 14px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .ui-row { display: flex; gap: 10px; align-items: center; }
+  .ui-avatar {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, #c7d2fe, #a5b4fc);
+    display: grid; place-items: center; font-size: 0.9rem;
+  }
+  .ui-lines { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  .ui-line-1 { width: 50%; height: 7px; background: rgba(15,23,42,0.15); border-radius: 4px; }
+  .ui-line-2 { width: 30%; height: 5px; background: rgba(15,23,42,0.08); border-radius: 4px; }
+  
+  .ui-chart {
+    display: flex; align-items: flex-end; gap: 6px; height: 45px;
+    margin-top: auto; border-bottom: 1px solid rgba(15,23,42,0.05);
+  }
+  .ui-bar { flex: 1; border-radius: 3px 3px 0 0; opacity: 0.9; }
+  .ui-bar:nth-child(1) { height: 30%; background: #818cf8; }
+  .ui-bar:nth-child(2) { height: 60%; background: #a5b4fc; }
+  .ui-bar:nth-child(3) { height: 40%; background: #f472b6; }
+  .ui-bar:nth-child(4) { height: 80%; background: #fbbf24; }
+
+  /* کارت‌های شناور */
+  .float-card{
+    position:absolute; background:rgba(255, 255, 255, 0.95);
+    backdrop-filter:blur(12px); border-radius:12px;
+    box-shadow: 0 8px 24px -4px rgba(15,23,42,0.15);
+    border:1px solid rgba(255,255,255,0.9);
+    padding:8px 12px; display:flex; align-items:center; gap:8px;
+    animation:float 5s ease-in-out infinite; z-index: 20;
+    transition: transform 0.3s;
+  }
+  .float-card:hover { transform: scale(1.05) !important; animation-play-state: paused; z-index:30; }
+  .float-card .icon-box{
+    width:28px; height:28px; background:#f8fafc; border-radius:8px;
+    display:grid; place-items:center; font-size:0.8rem; border:1px solid rgba(15,23,42,0.05);
+  }
+  .float-card .details{ display:flex; flex-direction:column; }
+  .float-card .title{ font-weight:900; font-size:0.7rem; color:var(--text-main); }
+  .float-card .subtitle{ font-size:0.55rem; color:var(--text-muted); font-weight:600; display:flex; align-items:center; gap:4px; }
+  
+  .status-dot { width: 5px; height: 5px; background: #10b981; border-radius: 50%; display: inline-block; }
+
+  .card-1{ top:-5%; right:0%; animation-delay:0s; }
+  .card-2{ bottom:0%; left:-5%; animation-delay:1.5s; }
+  .card-3{ top:40%; right:-15%; animation-delay:3s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* ============================================================
+     سکشن اکتشاف (کارت‌های کوچک و پرتر)
+     ============================================================ */
+  .explore-section {
+    padding: 80px 24px;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--bg-body);
+    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  
+  .explore-section::before {
+    content: 'MODULES';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(10rem, 20vw, 20rem);
+    font-weight: 900;
+    color: rgba(15, 23, 42, 0.02);
+    white-space: nowrap; pointer-events: none;
+    z-index: 0; font-family: var(--font-main); letter-spacing: -5px;
+  }
+
+  .explore-container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+
+  .section-header{
+    margin-bottom: 48px;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    flex-wrap: wrap; gap: 20px;
+  }
+  
+  .section-header h2{
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 900; letter-spacing: -1px; margin-bottom: 8px;
+  }
+  
+  .section-header p{ font-size: 1.05rem; color: var(--text-muted); font-weight: 400; }
+
+  .grid-modules {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 16px;
+  }
+
+  .module-card{
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    text-decoration: none;
+    color: var(--text-main);
+    display: flex; flex-direction: column;
+    border: 1px solid rgba(15,23,42,0.06);
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative; overflow: hidden; z-index: 1;
+  }
+  
+  .module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(79,70,229,0.2);
+  }
+
+  .module-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+  }
+
+  .module-icon{
+    width: 44px; height: 44px; background: #f8fafc; border-radius: 12px;
+    display: grid; place-items: center; font-size: 1.3rem;
+    border: 1px solid rgba(15,23,42,0.04); transition: all 0.3s; flex-shrink: 0;
+  }
+  
+  .module-card:hover .module-icon {
+    transform: scale(1.1) rotate(-5deg); background: #fff;
+    box-shadow: 0 8px 16px rgba(15,23,42,0.05);
+  }
+
+  .module-title{
+    font-size: 1.05rem; font-weight: 900; letter-spacing: -0.3px; line-height: 1.3;
+  }
+
+  .module-desc{
+    font-size: 0.8rem; color: var(--text-muted); font-weight: 500;
+    line-height: 1.7; flex: 1; margin-bottom: 16px;
+  }
+
+  .module-link{
+    display: inline-flex; align-items: center; gap: 4px;
+    font-weight: 800; font-size: 0.75rem; color: var(--text-main);
+    transition: all 0.2s ease;
+  }
+  
+  .module-card:hover .module-link { color: var(--primary); }
+  .module-card:hover .module-link svg { transform: translateX(-3px); }
+  .module-link svg { transition: transform 0.2s ease; width: 14px; height: 14px; }
+
+  /* رنگ‌های اختصاصی ماژول‌ها */
+  .mod-hamzeh .module-icon { color: #f59e0b; background: #fffbeb; border-color: #fef3c7; }
+  .mod-games .module-icon { color: #4f46e5; background: #e0e7ff; border-color: #c7d2fe; }
+  .mod-stories .module-icon { color: #ec4899; background: #fdf2f8; border-color: #fbcfe8; }
+  .mod-notes .module-icon { color: #10b981; background: #ecfdf5; border-color: #a7f3d0; }
+  .mod-quran .module-icon { color: #8b5cf6; background: #f5f3ff; border-color: #ddd6fe; }
+  .mod-contact .module-icon { color: #06b6d4; background: #ecfeff; border-color: #a5f3fc; }
+
+  /* ============================================================
+     بخش پروژه یادگیری دیجیتال (تو چشم و با CTA)
+     ============================================================ */
+  .learning-section {
+    background: linear-gradient(135deg, #ecfdf5 0%, #e0e7ff 100%);
+    border-top: 1px solid rgba(15,23,42,0.05);
+    border-bottom: 1px solid rgba(15,23,42,0.05);
+    padding: 80px 24px;
+    position: relative;
+  }
+
+  .learning-container { max-width: 1100px; margin: 0 auto; }
+
+  .learning-header { text-align: center; margin-bottom: 40px; }
+
+  .learning-header .badge {
+    display: inline-block; background: #fff; color: #10b981;
+    padding: 6px 16px; border-radius: 999px; font-weight: 800;
+    font-size: 0.85rem; margin-bottom: 16px; border: 1px solid #a7f3d0;
+    box-shadow: 0 4px 12px rgba(16,185,129,0.1);
+  }
+
+  .learning-header h2 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 900; letter-spacing: -1px; margin-bottom: 16px;
+    color: var(--text-main);
+  }
+
+  /* متن جامع با علوم شناختی و گیمیفیکیشن */
+  .learning-header p {
+    font-size: 1.05rem; color: var(--text-main);
+    max-width: 800px; margin: 0 auto 24px; line-height: 2;
+    font-weight: 500; text-align: center;
+  }
+  
+  .learning-header p strong {
+    background: rgba(255,255,255,0.7);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--primary);
+  }
+
+  /* دکمه CTA وسط هدر */
+  .btn-cta {
+    background: var(--primary);
+    color: #fff;
+    text-decoration: none;
+    padding: 16px 36px;
+    border-radius: var(--radius-sm);
+    font-weight: 900;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(79,70,229,0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid transparent;
+  }
+  
+  .btn-cta:hover {
+    background: var(--primary-hover);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(79,70,229,0.4);
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px; position: relative; margin-bottom: 40px; margin-top: 40px;
+  }
+
+  .steps-grid::before {
+    content: ''; position: absolute; top: 40px; left: 15%; right: 15%;
+    height: 2px; background: repeating-linear-gradient(90deg, #94a3b8 0, #94a3b8 8px, transparent 8px, transparent 16px);
+    z-index: 0; opacity: 0.5;
+  }
+
+  .step-card {
+    position: relative; z-index: 1; background: #fff;
+    border-radius: 20px; padding: 30px 20px; text-align: center;
+    border: 1px solid rgba(15,23,42,0.05);
+    box-shadow: 0 4px 20px -2px rgba(15,23,42,0.05);
+    transition: all 0.3s ease;
+  }
+
+  .step-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px -5px rgba(15,23,42,0.1);
+    border-color: rgba(16,185,129,0.4);
+  }
+
+  .step-icon-wrapper {
+    width: 70px; height: 70px; margin: 0 auto 16px;
+    background: #ecfdf5; border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; border: 4px solid #fff;
+    box-shadow: 0 0 0 1px rgba(16,185,129,0.2), 0 4px 12px rgba(16,185,129,0.1);
+    position: relative; transition: transform 0.3s;
+  }
+
+  .step-card:hover .step-icon-wrapper { transform: scale(1.1) rotate(-5deg); }
+
+  .step-number {
+    position: absolute; top: -5px; right: -5px; width: 24px; height: 24px;
+    background: #10b981; color: #fff; border-radius: 50%;
+    display: grid; place-items: center; font-size: 0.75rem;
+    font-weight: 900; border: 2px solid #fff;
+  }
+
+  .step-title { font-size: 1.15rem; font-weight: 900; margin-bottom: 8px; color: var(--text-main); }
+  .step-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; font-weight: 500; }
+  .step-desc strong { color: var(--text-main); font-weight: 800; }
+
+  .science-box {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.8);
+    border-radius: 20px; padding: 24px 30px;
+    display: flex; align-items: center; gap: 20px;
+    box-shadow: 0 8px 24px -4px rgba(15,23,42,0.05);
+  }
+
+  .science-icon { font-size: 2.5rem; flex-shrink: 0; }
+  .science-text h4 { font-size: 1.05rem; font-weight: 900; margin-bottom: 6px; color: var(--text-main); }
+  .science-text p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.8; font-weight: 500; }
+  .science-text span { background: #d1fae5; color: #047857; padding: 0 6px; border-radius: 4px; font-weight: 800; }
+
+  /* ============================================================
+     فوتر
+     ============================================================ */
+  footer{
+    background:#fff; border-top:1px solid rgba(15,23,42,0.05); padding:60px 24px 30px; position: relative; z-index: 10;
+  }
+  .footer-container{ max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:40px; margin-bottom:40px; }
+  .footer-brand{ max-width:340px; }
+  .footer-brand .logo{ margin-bottom:16px; }
+  .footer-brand p{ font-size:0.9rem; color:var(--text-muted); line-height:1.9; }
+  .footer-links{ display:flex; gap:60px; flex-wrap:wrap; }
+  .link-group h4{ font-size:0.95rem; font-weight:900; margin-bottom:16px; color:var(--text-main); letter-spacing: -0.5px; }
+  .link-group a{ display:block; color:var(--text-muted); text-decoration:none; font-size:0.85rem; margin-bottom:10px; transition:color 0.2s; font-weight: 500; }
+  .link-group a:hover{ color:var(--primary); }
+  .footer-bottom{
+    max-width:1200px; margin:0 auto; padding-top:24px; border-top:1px solid rgba(15,23,42,0.05);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; font-size:0.85rem; color:var(--text-muted); font-weight: 500;
+  }
+
+  /* ============================================================
+     ریسپانسیو
+     ============================================================ */
+  @media (max-width: 1024px){
+    .hero{ flex-direction:column; text-align:center; padding-top:140px; gap: 30px; }
+    .hero p{ margin:0 auto 32px; }
+    .hero-buttons{ justify-content:center; }
+    .hero-graphic{ margin-top:20px; }
+    
+    .steps-grid{ grid-template-columns:1fr; gap: 16px; }
+    .steps-grid::before{ display:none; }
+    .step-card{ display:flex; align-items:center; text-align:right; gap:16px; padding:20px; }
+    .step-icon-wrapper{ margin:0; flex-shrink:0; width:60px; height:60px; font-size:1.5rem; }
+    .step-number{ right:auto; left:-5px; }
+  }
+
+  @media (max-width: 768px){
+    .nav-container{ padding:16px 20px; }
+    .nav-links{
+      display:none; position:absolute; top:100%; left:0; right:0;
+      background:rgba(255,255,255,0.95); backdrop-filter: blur(20px);
+      flex-direction:column; padding:24px; box-shadow:var(--shadow-soft); border-bottom:1px solid rgba(15,23,42,0.05);
+    }
+    .nav-links.active{ display:flex; }
+    .nav-links a { width: 100%; padding: 12px 0; border-bottom: 1px solid rgba(15,23,42,0.03); }
+    .nav-links a:last-child { border-bottom: none; }
+    .hamburger{ display:block; }
+    .hero h1{ font-size:2.4rem; }
+    
+    .hero-graphic{ width:300px; height:280px; }
+    .glass-window { width: 220px; height: 160px; transform: none; }
+    .float-card { padding: 6px 10px; gap: 6px; border-radius: 8px; }
+    .float-card .icon-box { width: 22px; height: 22px; font-size: 0.7rem; border-radius: 6px; }
+    .float-card .title { font-size: 0.65rem; }
+    .float-card .subtitle { font-size: 0.55rem; }
+    .card-1{ top:-10%; right:-5%; }
+    .card-2{ bottom:-5%; left:-5%; }
+    .card-3{ display: none; }
+
+    .section-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .grid-modules { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .module-card { padding: 16px; }
+    
+    .science-box { flex-direction: column; text-align: center; padding: 20px; }
+    .footer-container{ flex-direction:column; gap:30px; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    
+    .btn-cta { width: 100%; justify-content: center; }
+  }
+
+  @media (max-width: 480px){
+    .hero h1{ font-size: 2.1rem; }
+    .hero-graphic{ width: 260px; height: 240px; }
+    .glass-window { width: 190px; height: 140px; }
+    .grid-modules { grid-template-columns: 1fr; }
+    .step-card { flex-direction: column; text-align: center; }
+    .step-icon-wrapper { margin: 0 auto; }
+    .step-number { left: -5px; right: auto; }
+    .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <div class="logo-mark">M</div>
+        دنیای مفتح
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#modules">بخش‌ها</a>
+        <a href="summary_project/index.html" class="nav-highlight">پروژه یادگیری دیجیتال</a>
+        <!-- دکمه مشکی الان ارتباط با سازندگان هست -->
+        <a href="#footer" class="btn-nav">ارتباط با سازندگان</a>
+      </div>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+  </nav>
+
+  <!-- هیرو -->
+  <header class="hero">
+    <div class="hero-text">
+      <div class="hero-badge">نسخه جدید ۲.۰</div>
+      <h1>
+        به دنیای <br>
+        <span class="text-gradient">مفتح</span> خوش آمدید
+      </h1>
+      <p>
+        دنیای مفتح یک اکوسیستم اختصاصی برای دانش‌آموزان دبیرستان دکتر شهید مفتح است. جایی که بازی‌های هیجان‌انگیز، داستان‌های تعاملی روانشناختی، و محتوای درسی در هم می‌آمیزند تا مدرسه را به محیطی زنده و پویا تبدیل کنند.
+      </p>
+      <div class="hero-buttons">
+        <a href="#modules" class="btn-primary">
+          ورود به بخش‌ها
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </a>
+        <a href="summary_project/index.html" class="btn-secondary">پروژه یادگیری دیجیتال</a>
+      </div>
+    </div>
+    
+    <div class="hero-graphic">
+      <div class="mesh-bg"></div>
+      
+      <div class="glass-window">
+        <div class="window-header">
+          <div class="dot-btn red"></div>
+          <div class="dot-btn yellow"></div>
+          <div class="dot-btn green"></div>
+        </div>
+        <div class="window-body">
+          <div class="ui-row">
+            <div class="ui-avatar">🎓</div>
+            <div class="ui-lines">
+              <div class="ui-line-1"></div>
+              <div class="ui-line-2"></div>
+            </div>
+          </div>
+          <div class="ui-chart">
+            <div class="ui-bar"></div>
+            <div class="ui-bar"></div>
+            <div class="ui-bar"></div>
+            <div class="ui-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="float-card card-1">
+        <div class="icon-box">🧙</div>
+        <div class="details">
+          <div class="title">آقای حمزه</div>
+          <div class="subtitle"><span class="status-dot"></span> آنلاین</div>
+        </div>
+      </div>
+
+      <div class="float-card card-2">
+        <div class="icon-box">🏆</div>
+        <div class="details">
+          <div class="title">رکورد جدید</div>
+          <div class="subtitle">امتیاز: ۲,۴۵۰</div>
+        </div>
+      </div>
+
+      <div class="float-card card-3">
+        <div class="icon-box">📊</div>
+        <div class="details">
+          <div class="title">پیشرفت درسی</div>
+          <div class="subtitle">+۱۵٪ این هفته</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- سکشن اکتشاف -->
+  <section id="modules" class="explore-section">
+    <div class="explore-container">
+      
+      <div class="section-header">
+        <div>
+          <h2>اکتشاف در دنیای مفتح</h2>
+          <p>برای ورود به هر بخش، روی کارت مربوطه کلیک کنید.</p>
+        </div>
+        <a href="#" style="font-size:0.85rem; font-weight:800; color:var(--primary); text-decoration:none; display:flex; align-items:center; gap:4px;">
+          مشاهده همه <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </a>
+      </div>
+
+      <div class="grid-modules">
+        
+        <a href="hamzeh.html" class="module-card mod-hamzeh">
+          <div class="module-header">
+            <div class="module-icon">🧙</div>
+            <h3 class="module-title">پرونده آقای حمزه</h3>
+          </div>
+          <p class="module-desc">ماجرای اسطوره‌ای که ۴۰ سال است در کلاس هشتم مانده است.</p>
+          <span class="module-link">
+            مشاهده <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </span>
+        </a>
+
+        <a href="games.html" class="module-card mod-games">
+          <div class="module-header">
+            <div class="module-icon">🎮</div>
+            <h3 class="module-title">مرکز بازی‌ها</h3>
+          </div>
+          <p class="module-desc">دونده هیجانی، لیوان و گوی، گل یا پوچ و چالش‌های فکری.</p>
+          <span class="module-link">
+            ورود به بازی <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </span>
+        </a>
+
+        <a href="stories.html" class="module-card mod-stories">
+          <div class="module-header">
+            <div class="module-icon">📖</div>
+            <h3 class="module-title">انتخاب سخت</h3>
+          </div>
+          <p class="module-desc">داستان‌های تعاملی روانشناختی که سرنوشتشان با تصمیم شما تغییر می‌کند.</p>
+          <span class="module-link">
+            خواندن داستان <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </span>
+        </a>
+
+        <!-- کارت پروژه یادگیری دیجیتال -->
+        <a href="summary_project/index.html" class="module-card mod-notes">
+          <div class="module-header">
+            <div class="module-icon">🧠</div>
+            <h3 class="module-title">پروژه یادگیری دیجیتال</h3>
+          </div>
+          <p class="module-desc">سیستم یادگیری هوشمند مبتنی بر علوم شناختی و گیمیفیکیشن برای تثبیت مفاهیم درسی.</p>
+          <span class="module-link">
+            شروع یادگیری <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </span>
+        </a>
+
+        <a href="quran.html" class="module-card mod-quran">
+          <div class="module-header">
+            <div class="module-icon">🕌</div>
+            <h3 class="module-title">مسابقات قرآن</h3>
+          </div>
+          <p class="module-desc">راهنمای جامع رشته‌ها، محدوده‌های حفظ و قرائت و زمان‌بندی مسابقات.</p>
+          <span class="module-link">
+            مشاهده راهنما <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </span>
+        </a>
+
+        <a href="#footer" class="module-card mod-contact">
+          <div class="module-header">
+            <div class="module-icon">✉️</div>
+            <h3 class="module-title">ارتباط با سازندگان</h3>
+          </div>
+          <p class="module-desc">پیشنهاد یا انتقادی دارید؟ برای همکاری و راهنمایی در تماس باشید.</p>
+          <span class="module-link">
+            تماس با معاونت <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- بخش پروژه ۳ مرحله‌ای یادگیری دیجیتال (تو چشم و با CTA) -->
+  <section id="learning" class="learning-section">
+    <div class="learning-container">
+      
+      <div class="learning-header">
+        <div class="badge">علمی و اثبات‌شده</div>
+        <!-- عنوان کامل در جایی که فضا هست -->
+        <h2>پروژه سه مرحله‌ای یادگیری دیجیتال</h2>
+        <!-- توضیحات نوروساینسی و گیمیفیکیشن -->
+        <p>
+          روش سه‌مرحله‌ای مفتح بر پایه <strong>علوم شناختی و روان‌شناسی یادگیری</strong> طراحی شده است. این روش چرخه‌ای کامل از آشنایی ← تمرین ← ارزیابی ایجاد می‌کند که با فعال‌سازی همزمان حافظه کوتاه‌مدت و بلندمدت، باعث تثبیت پایدار مفاهیم می‌شود. با ترکیب این روش با <strong>گیمیفیکیشن (بازی‌وارسازی)</strong>، یادگیری به یک تجربه جذاب و انگیزشی تبدیل شده و با آزادسازی دوپامین، چسبندگی ذهنی (Retention) را افزایش می‌دهد. هر مفهوم در سه بافت متفاوت مرور می‌گردد — همان چیزی که علم یادگیری آن را <strong>«تکرار فاصله‌دار»</strong> می‌نامد.
+        </p>
+        <a href="summary_project/index.html" class="btn-cta">
+          ورود به پروژه یادگیری دیجیتال
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </a>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-icon-wrapper">
+            💡
+            <div class="step-number">۱</div>
+          </div>
+          <h3 class="step-title">آشنایی</h3>
+          <p class="step-desc">
+            فعال‌سازی <strong>حافظه کوتاه‌مدت</strong> با خلاصه‌های جذاب.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-icon-wrapper">
+            🧩
+            <div class="step-number">۲</div>
+          </div>
+          <h3 class="step-title">تمرین</h3>
+          <p class="step-desc">
+            مرور در بافت‌های مختلف با روش <strong>«تکرار فاصله‌دار»</strong>.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-icon-wrapper">
+            📈
+            <div class="step-number">۳</div>
+          </div>
+          <h3 class="step-title">ارزیابی</h3>
+          <p class="step-desc">
+            تثبیت در <strong>حافظه بلندمدت</strong> و بازیابی سریع در آزمون.
+          </p>
+        </div>
+      </div>
+
+      <div class="science-box">
+        <div class="science-icon">🧠</div>
+        <div class="science-text">
+          <h4>علم پشت این ماجرا (و نقش بازی‌ها) چیست؟</h4>
+          <p>
+            مغز ما اطلاعات را فقط با تکرار در فواصل زمانی مختلف به حافظه بلندمدت منتقل می‌کند. با تلفیق <span>گیمیفیکیشن</span> و فعال‌سازی مسیرهای عصبی، یادگیری به یک تجربه لذت‌بخش، چالش‌برانگیز و ماندگار تبدیل می‌شود.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer id="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-mark">M</div>
+          دنیای مفتح
+        </a>
+        <p>پلتفرم آموزشی و سرگرمی اختصاصی دبیرستان دکتر شهید مفتح. طراحی شده توسط معاونت پرورشی با هدف ایجاد تجربه‌ای متفاوت برای دانش‌آموزان.</p>
+      </div>
+      
+      <div class="footer-links">
+        <div class="link-group">
+          <h4>دسترسی سریع</h4>
+          <a href="#modules">بخش‌ها</a>
+          <a href="hamzeh.html">آقای حمزه</a>
+          <a href="games.html">بازی‌ها</a>
+        </div>
+        <div class="link-group">
+          <h4>اطلاعات</h4>
+          <a href="summary_project/index.html">پروژه یادگیری دیجیتال</a>
+          <a href="quran.html">بخشنامه مسابقات</a>
+          <a href="#">حریم خصوصی</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div>© ۱۴۰۳ دنیای مفتح — تمامی حقوق محفوظ است.</div>
+      <div>طراحی شده با ❤️ برای دانش‌آموزان مفتح</div>
+    </div>
+  </footer>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    hamburger.innerHTML = navLinks.classList.contains('active') ? '✕' : '☰';
+  });
+
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      if(window.innerWidth <= 768){
+        navLinks.classList.remove('active');
+        hamburger.innerHTML = '☰';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
